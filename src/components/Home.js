@@ -28,7 +28,7 @@ const Home = () => {
         }
        initializeFloatingStars();
       }, 
-      []);
+      [redirectToOriginalUrl]);
 
 
   const redirectToOriginalUrl = async (shortUrl) => {
