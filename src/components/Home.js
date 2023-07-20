@@ -1,10 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import validateUrl from '../utils/isValidUrl';
 import './home.css';
 import { initializeFloatingStars } from './stars';
-
-
 
 const Home = () => {
   const [longUrl, setLongUrl] = useState('');
@@ -12,61 +10,47 @@ const Home = () => {
   const [error, setError] = useState('');
   const [showNotification, setShowNotification] = useState(false);
   const [loading, setLoading] = useState(false);
-  let SERVER_URL = "http://3.19.230.90:8080";
+  const SERVER_URL = "http://3.19.230.90:8080";
 
-  
-
-
-      useEffect(() => {
-        const pathname = window.location.pathname;
-        if (pathname.length > 1) {
-          
-          const shortUrl = pathname.substring(1);
-        
-       
-          redirectToOriginalUrl(shortUrl);
-        }
-       initializeFloatingStars();
-      }, 
-      [redirectToOriginalUrl]);
-
-
-  const redirectToOriginalUrl = async (shortUrl) => {
-  
+  const redirectToOriginalUrl = useCallback(async (shortUrl) => {
     try {
       const response = await fetch(`${SERVER_URL}/${shortUrl}`, {
         method: 'GET',
       });
-  
+
       if (response.status === 404) {
-        // Handle the case when shortUrl is not found
         console.error('Short URL not found');
         return;
       }
-  
+
       if (!response.ok) {
         throw new Error('Failed to retrieve the original URL');
       }
-  
+
       const originalUrl = await response.text();
-      console.log('---> ',originalUrl)
+      console.log('---> ', originalUrl);
 
       if (!originalUrl.startsWith('http://') && !originalUrl.startsWith('https://')) {
-        // If no protocol, assume HTTP as the default protocol
         const fullUrl = 'http://' + originalUrl;
         window.location.replace(fullUrl);
       } else {
-        // If the original URL has a protocol, perform the redirection as usual
         window.location.replace(originalUrl);
       }
-      
+
     } catch (error) {
       console.error('Error:', error);
       // Handle the error as needed
     }
-  };
-  
-  
+  }, [SERVER_URL]);
+
+  useEffect(() => {
+    const pathname = window.location.pathname;
+    if (pathname.length > 1) {
+      const shortUrl = pathname.substring(1);
+      redirectToOriginalUrl(shortUrl);
+    }
+    initializeFloatingStars();
+  }, [redirectToOriginalUrl]);
 
   const handleSubmit = async () => {
     if (!validateUrl(longUrl)) {
@@ -74,11 +58,11 @@ const Home = () => {
       setShortUrl('');
       return;
     }
-  
-    setLoading(true); // Start the loading state
-  
+
+    setLoading(true);
+
     const cleanedUrl = removeProtocolAndTrailingSlash(longUrl);
-  
+
     try {
       const generatedShortUrl = await generateShortUrl(cleanedUrl);
       setShortUrl(generatedShortUrl);
@@ -88,7 +72,7 @@ const Home = () => {
       console.error('Error generating short URL:', error);
       setError('Failed to generate short URL');
     } finally {
-      setLoading(false); // Stop the loading state, whether successful or not
+      setLoading(false);
     }
   };
 
@@ -101,19 +85,19 @@ const Home = () => {
         },
         body: JSON.stringify({ cleanedUrl }),
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to generate short URL');
       }
-  
+
       const data = await response.text();
       return data;
     } catch (error) {
       console.error('Error:', error);
-      return ''; // Return an empty string or handle the error as needed
+      return '';
     }
   };
-  
+
   const removeProtocolAndTrailingSlash = (url) => {
     let cleanedUrl = url.trim();
 
@@ -129,34 +113,25 @@ const Home = () => {
 
     return cleanedUrl;
   };
-  
 
-  
-  
-  
-  
-  
-  
   const handleCopyClick = () => {
-    // Copy the short URL to the clipboard
     navigator.clipboard.writeText(shortUrl).then(() => {
       setShowNotification(true);
       setTimeout(() => {
         setShowNotification(false);
-      }, 2000); // Hide the notification after 2 seconds
+      }, 2000);
     }).catch((error) => {
       console.error('Error copying to clipboard:', error);
     });
   };
-  
 
   return (
     <div className="container d-flex flex-column justify-content-center align-items-center vh-100">
 
-    <div class="floating-stars">
-    
-    </div>
-      <h2 className="text_color">URL Shortner</h2>
+      <div className="floating-stars"></div>
+
+      <h2 className="text_color">URL Shortener</h2>
+
       <div className="input-group">
         <input
           type="text"
@@ -169,41 +144,34 @@ const Home = () => {
           Submit
         </button>
       </div>
+
       {error && <p className="text-danger">{error}</p>}
-    
-        {loading ? (
-            <div className='d-flex flex-column align-items-center'>
-                <p className='text_color'>Loading...</p>
-            </div>
-            ) : (
+
+      {loading ? (
+        <div className='d-flex flex-column align-items-center'>
+          <p className='text_color'>Loading...</p>
+        </div>
+      ) : (
         shortUrl && (
-            <div className='d-flex flex-column align-items-center'>
-                <p className='text_color'>Short URL: {shortUrl}</p>
-                <button className='btn btn-success' onClick={handleCopyClick}>
-                    Copy
-                </button>
-                </div>
-            )
-        )}
+          <div className='d-flex flex-column align-items-center'>
+            <p className='text_color'>Short URL: {shortUrl}</p>
+            <button className='btn btn-success' onClick={handleCopyClick}>
+              Copy
+            </button>
+          </div>
+        )
+      )}
 
+      {showNotification && (
+        <div className="notification">
+          <div className="alert alert-success" role="alert">
+            Copied to clipboard!
+          </div>
+        </div>
+      )}
 
-     {showNotification && (
-            <div className="notification">
-            <div className="alert alert-success" role="alert">
-                Copied to clipboard!
-            </div>
-            </div>
-        )}
-        
     </div>
-
   );
-
-  
 };
-
-
-  
-
 
 export default Home;
