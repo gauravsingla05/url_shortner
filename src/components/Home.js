@@ -10,7 +10,7 @@ const Home = () => {
   const [error, setError] = useState('');
   const [showNotification, setShowNotification] = useState(false);
   const [loading, setLoading] = useState(false);
-  const SERVER_URL = "http://3.19.230.90:8080";
+  const SERVER_URL = "https://urlshortnerback.online";
 
   const redirectToOriginalUrl = useCallback(async (shortUrl) => {
     try {
