@@ -1,70 +1,120 @@
-# Getting Started with Create React App
+Live at : https://my-short-url.netlify.app/
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# URL Shortener Application
 
-## Available Scripts
+The URL Shortener Application is a web-based platform that allows users to generate shortened URLs for long web addresses. Developed using Spring Boot for the backend and React for the frontend, the application provides a user-friendly interface for URL shortening and seamless redirection to original URLs.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Shorten long URLs to generate user-friendly and shareable short URLs.
+- Seamlessly redirect users to the original long URLs when they access the short URLs.
+- Validate user-inputted URLs to ensure correctness and prevent invalid URL mappings.
+- Secure communication between frontend and backend using CORS configuration.
+- Continuous deployment of frontend and backend for quick updates and availability.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Tech Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The application is built using the following technologies:
 
-### `npm test`
+- Frontend:
+  - React: A JavaScript library for building user interfaces.
+  - Axios: A popular HTTP client library for making API requests.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Backend:
+  - Spring Boot: A Java framework for building web applications.
+  - Spring Web: For creating RESTful APIs.
+  - Spring Data JPA: For data access and database interactions.
+  - MySQL: A relational database for storing URL mappings.
 
-### `npm run build`
+- Deployment:
+  - Netlify: For hosting and deploying the React frontend.
+  - AWS EC2: For hosting and deploying the Spring Boot backend.
+  - Let's Encrypt: For SSL certificate installation and enabling HTTPS.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Getting Started
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To run the application locally, follow these steps:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Prerequisites
 
-### `npm run eject`
+- Node.js and npm for running the frontend application.
+- Java 8 or higher and MySQL for the backend application.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Frontend Setup
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Clone the repository:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+   ```bash
+   git clone https://github.com/your-username/url-shortener.git
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2. Navigate to the frontend directory:
 
-## Learn More
+   ```bash
+   cd url-shortener/frontend
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+3. Install dependencies:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+   ```bash
+   npm install
+   ```
 
-### Code Splitting
+4. Start the frontend application:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+   ```bash
+   npm start
+   ```
 
-### Analyzing the Bundle Size
+   The frontend application will run on `http://localhost:3000`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Backend Setup
 
-### Making a Progressive Web App
+1. Ensure you have Java 8 or higher and MySQL installed.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+2. Clone the repository (if you haven't already):
 
-### Advanced Configuration
+   ```bash
+   git clone https://github.com/your-username/url-shortener.git
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+3. Navigate to the backend directory:
+
+   ```bash
+   cd url-shortener/backend
+   ```
+
+4. Update `application.properties` with your MySQL database configuration:
+
+   ```properties
+   spring.datasource.url=jdbc:mysql://your-mysql-host:your-mysql-port/your-database-name
+   spring.datasource.username=your-username
+   spring.datasource.password=your-password
+   ```
+
+5. Build the backend application:
+
+   ```bash
+   ./mvnw clean package
+   ```
+
+6. Run the backend application:
+
+   ```bash
+   java -jar target/url-shortener.jar
+   ```
+
+   The backend application will run on `http://localhost:8080`.
 
 ### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+The frontend application will be deployed automatically to Netlify on each push to the `master` branch. The backend application will be deployed to the AWS EC2 instance using your preferred deployment method (e.g., CI/CD pipeline).
 
-### `npm run build` fails to minify
+## Contribution
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Contributions to the URL Shortener Application are welcome! If you find any issues or want to add new features, feel free to open a pull request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
